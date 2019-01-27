@@ -24,7 +24,7 @@ load("data/regionsLight.RData")
 load("data/coorddep.RData")
 load("data/coordreg.RData")
 
-#here is the code for loading the exported from PROSPER
+#here is the code for loading the data exported from PROSPER "tableau de bord"
 datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,sep="\t")
 datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
@@ -33,7 +33,8 @@ datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 #Monitoring sampling maps by regions
 ###############################################################################
 
-#this script produce pdf files of sampling maps
+#this script produce png images of sampling maps for each "Programme" listed 
+#in the "datasampl" file
 colovec<-brewer.pal(8,"Dark2")
 for (i in 1:length(levels(datasampl$Programme))){
   temp<-datasampl[datasampl$Programme==levels(datasampl$Programme)[i],]
@@ -70,8 +71,10 @@ for (i in 1:length(levels(datasampl$Programme))){
 
 
 ###############################################################################
-#Monitoring sampling maps by regions
+#Maps of the results of the monitoring
 ###############################################################################
+
+
 
 
 
