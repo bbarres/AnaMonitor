@@ -10,6 +10,7 @@ library(rgeos)
 library(plotrix)
 library(mapplots)
 library(RColorBrewer)
+library(dplyr)
 
 
 ###############################################################################
@@ -24,9 +25,14 @@ load("data/regionsLight.RData")
 load("data/coorddep.RData")
 load("data/coordreg.RData")
 
-#here is the code for loading the data exported from PROSPER "tableau de bord"
+#loading the data exported from PROSPER "tableau de bord"
 datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,sep="\t")
 datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
+
+#loading the result data by departement
+dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
+factor(dataresult$rslt_RS,levels=c("R","S"))
+dataresult<-merge(dataresult,coorddep,by.x="dptmt",by.y="dep_ID")
 
 
 ###############################################################################
@@ -77,8 +83,31 @@ for (i in 1:length(levels(datasampl$Programme))){
 #Maps of the results of the monitoring
 ###############################################################################
 
+dataresult %>% 
+  group_by(themat_ID,dptmt,rslt_RS) %>% 
+  summarise(n())
 
+#producing the map
+APdata<-cbind("dep_ID"=row.names(table(ven_moni$dptmt,
+                                       ven_moni$AP,exclude="")),
+              "Resistant"=table(ven_moni$dptmt,
+                                ven_moni$AP,exclude="")[,1],
+              "Sensible"=table(ven_moni$dptmt,
+                               ven_moni$AP,exclude="")[,2],
+              "Total"=rowSums(table(ven_moni$dptmt,
+                                    ven_moni$AP,exclude="")))
 
+data2map<-merge(APdata,coorddep,by="dep_ID")
+
+op<-par(mar=c(0,0,0,0))
+plot(departe)
+draw.pie(x=data2map$longitude,y=data2map$latitude,
+         z=cbind((as.numeric(as.character(data2map$Resistant))),
+                 (as.numeric(as.character(data2map$Sensible)))),
+         col=c("red","blue"),
+         radius=(sqrt(as.numeric(as.character(data2map$Total)))*8000),
+         labels=NA)
+par(op)
 
 
 
