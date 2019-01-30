@@ -33,6 +33,9 @@ datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 #Monitoring sampling maps by regions
 ###############################################################################
 
+#a note for futur-me: this code will probably need some minor updates in order
+#to work properly on the raw exported-from-PROSPER file
+
 #this script produce png images of sampling maps for each "Programme" listed 
 #in the "datasampl" file
 colovec<-brewer.pal(8,"Dark2")
