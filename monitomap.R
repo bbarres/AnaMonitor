@@ -31,8 +31,12 @@ datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
 #loading the result data by departement
 dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
-factor(dataresult$rslt_RS,levels=c("R","S"))
-dataresult<-merge(dataresult,coorddep,by.x="dptmt",by.y="dep_ID")
+#to streamline subsequent analysis, we turned the resistance status factor
+#into two different columns
+dataresult$rslt_RS<-factor(dataresult$rslt_RS,levels=c("R","S"))
+dataresult$Resistant<-as.numeric(dataresult$rslt_RS==levels(dataresult$rslt_RS)[1])
+dataresult$Sensitive<-as.numeric(dataresult$rslt_RS==levels(dataresult$rslt_RS)[2])
+dataresult$Total<-dataresult$Resistant+dataresult$Sensitive
 
 
 ###############################################################################
@@ -83,29 +87,20 @@ for (i in 1:length(levels(datasampl$Programme))){
 #Maps of the results of the monitoring
 ###############################################################################
 
-dataresult %>% 
-  group_by(themat_ID,dptmt,rslt_RS) %>% 
-  summarise(n())
+#grouping and counting the resistant and sensitive samples
+dataCamem<-dataresult %>% 
+  group_by(themat_ID,dptmt,Resistant) %>% 
+  summarise(Resist=sum(Resistant),Sensi=sum(Sensitive),Tot=sum(Total))
 
-#producing the map
-APdata<-cbind("dep_ID"=row.names(table(ven_moni$dptmt,
-                                       ven_moni$AP,exclude="")),
-              "Resistant"=table(ven_moni$dptmt,
-                                ven_moni$AP,exclude="")[,1],
-              "Sensible"=table(ven_moni$dptmt,
-                               ven_moni$AP,exclude="")[,2],
-              "Total"=rowSums(table(ven_moni$dptmt,
-                                    ven_moni$AP,exclude="")))
-
-data2map<-merge(APdata,coorddep,by="dep_ID")
+data2map<-merge(dataCamen,coorddep,by.x="dptmt",by.y="dep_ID")
 
 op<-par(mar=c(0,0,0,0))
-plot(departe)
+plot(departeLight,col="grey70")
 draw.pie(x=data2map$longitude,y=data2map$latitude,
-         z=cbind((as.numeric(as.character(data2map$Resistant))),
-                 (as.numeric(as.character(data2map$Sensible)))),
+         z=cbind((as.numeric(as.character(data2map$Resist))),
+                 (as.numeric(as.character(data2map$Sensi)))),
          col=c("red","blue"),
-         radius=(sqrt(as.numeric(as.character(data2map$Total)))*8000),
+         radius=(sqrt(as.numeric(as.character(data2map$Tot)))*30000),
          labels=NA)
 par(op)
 
