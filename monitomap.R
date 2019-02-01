@@ -95,11 +95,11 @@ dataCamem<-dataresult %>%
 data2map<-merge(dataCamem,coorddep,by.x="dptmt",by.y="dep_ID")
 colovec<-c(brewer.pal(9,"Reds")[7],brewer.pal(9,"Blues")[7])
 for (i in 1:length(levels(dataCamem$themat_ID))){
-  png(file=paste("output/",temp$host,temp$SA,".png",
-                 sep=""),width=6,height=6,units="in",res=300)
+  png(file=paste("output/",temp$host,temp$SA,".png",sep=""),
+      width=6,height=6,units="in",res=300)
   op<-par(mar=c(0,0,0,0))
   temp<-data2map[data2map$themat_ID==levels(data2map$themat_ID)[i],]
-  plot(departeLight)
+  plot(departeLight,border="grey70")
   plot(regionsLight,lwd=3,add=TRUE)
   draw.pie(x=temp$longitude,y=temp$latitude,
            z=cbind((as.numeric(as.character(temp$Resist))),
