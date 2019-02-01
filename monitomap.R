@@ -87,25 +87,29 @@ for (i in 1:length(levels(datasampl$Programme))){
 #Maps of the results of the monitoring
 ###############################################################################
 
+#a note for futur-me: this code will probably need some minor updates in order
+#to work properly on the raw exported-from-PROSPER file
+
 #grouping and counting the resistant and sensitive samples
 dataCamem<-dataresult %>% 
-  group_by(themat_ID,dptmt,Resistant,host,SA) %>% 
+  group_by(themat_ID,dptmt,pest,host) %>% 
   summarise(Resist=sum(Resistant),Sensi=sum(Sensitive),Tot=sum(Total))
-
 data2map<-merge(dataCamem,coorddep,by.x="dptmt",by.y="dep_ID")
+
+#mapping the results for each "programme"
 colovec<-c(brewer.pal(9,"Reds")[7],brewer.pal(9,"Blues")[7])
-for (i in 1:length(levels(dataCamem$themat_ID))){
-  png(file=paste("output/",temp$host,temp$SA,".png",sep=""),
-      width=6,height=6,units="in",res=300)
-  op<-par(mar=c(0,0,0,0))
+for (i in 1:length(levels(data2map$themat_ID))){
   temp<-data2map[data2map$themat_ID==levels(data2map$themat_ID)[i],]
+  png(file=paste("output/",temp$host,temp$pest,".png",sep=""),
+      width=4,height=4,units="in",res=300)
+  op<-par(mar=c(0,0,0,0))
   plot(departeLight,border="grey70")
-  plot(regionsLight,lwd=3,add=TRUE)
+  plot(regionsLight,lwd=2,add=TRUE)
   draw.pie(x=temp$longitude,y=temp$latitude,
            z=cbind((as.numeric(as.character(temp$Resist))),
                    (as.numeric(as.character(temp$Sensi)))),
            col=colovec,lty=0,
-           radius=(sqrt(as.numeric(as.character(temp$Tot)))*30000),
+           radius=(sqrt(as.numeric(as.character(temp$Tot)))*25000),
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
        labels=as.character(temp$Tot),cex=1.2)
