@@ -89,22 +89,29 @@ for (i in 1:length(levels(datasampl$Programme))){
 
 #grouping and counting the resistant and sensitive samples
 dataCamem<-dataresult %>% 
-  group_by(themat_ID,dptmt,Resistant) %>% 
+  group_by(themat_ID,dptmt,Resistant,host,SA) %>% 
   summarise(Resist=sum(Resistant),Sensi=sum(Sensitive),Tot=sum(Total))
 
-data2map<-merge(dataCamen,coorddep,by.x="dptmt",by.y="dep_ID")
-
-op<-par(mar=c(0,0,0,0))
-plot(departeLight,col="grey70")
-draw.pie(x=data2map$longitude,y=data2map$latitude,
-         z=cbind((as.numeric(as.character(data2map$Resist))),
-                 (as.numeric(as.character(data2map$Sensi)))),
-         col=c("red","blue"),
-         radius=(sqrt(as.numeric(as.character(data2map$Tot)))*30000),
-         labels=NA)
-par(op)
-
-
+data2map<-merge(dataCamem,coorddep,by.x="dptmt",by.y="dep_ID")
+colovec<-c(brewer.pal(9,"Reds")[7],brewer.pal(9,"Blues")[7])
+for (i in 1:length(levels(dataCamem$themat_ID))){
+  png(file=paste("output/",temp$host,temp$SA,".png",
+                 sep=""),width=6,height=6,units="in",res=300)
+  op<-par(mar=c(0,0,0,0))
+  temp<-data2map[data2map$themat_ID==levels(data2map$themat_ID)[i],]
+  plot(departeLight)
+  plot(regionsLight,lwd=3,add=TRUE)
+  draw.pie(x=temp$longitude,y=temp$latitude,
+           z=cbind((as.numeric(as.character(temp$Resist))),
+                   (as.numeric(as.character(temp$Sensi)))),
+           col=colovec,lty=0,
+           radius=(sqrt(as.numeric(as.character(temp$Tot)))*30000),
+           labels=NA)
+  text(x=temp$longitude,y=temp$latitude,
+       labels=as.character(temp$Tot),cex=1.2)
+  par(op)
+  dev.off()
+}
 
 ###############################################################################
 #END
