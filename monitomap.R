@@ -30,7 +30,7 @@ datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,sep="\t")
 datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
 #loading the result data by departement
-dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
+dataresult<-read.table("data/2018_midiou_rez.txt",header=TRUE,sep="\t")
 #to streamline subsequent analysis, we turned the resistance status factor
 #into two different columns
 dataresult$rslt_RS<-factor(dataresult$rslt_RS,levels=c("R","S"))
@@ -100,7 +100,7 @@ data2map<-merge(dataCamem,coorddep,by.x="dptmt",by.y="dep_ID")
 colovec<-c(brewer.pal(9,"Reds")[7],brewer.pal(9,"Blues")[7])
 for (i in 1:length(levels(data2map$themat_ID))){
   temp<-data2map[data2map$themat_ID==levels(data2map$themat_ID)[i],]
-  png(file=paste("output/",temp$host,temp$pest,".png",sep=""),
+  png(file=paste("output/",temp$themat_ID,temp$pest,".png",sep=""),
       width=4,height=4,units="in",res=300)
   op<-par(mar=c(0,0,0,0))
   plot(departeLight,border="grey70")
@@ -109,7 +109,7 @@ for (i in 1:length(levels(data2map$themat_ID))){
            z=cbind((as.numeric(as.character(temp$Resist))),
                    (as.numeric(as.character(temp$Sensi)))),
            col=colovec,lty=0,
-           radius=(sqrt(as.numeric(as.character(temp$Tot)))*25000),
+           radius=(sqrt(as.numeric(as.character(temp$Tot)))*15000),
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
        labels=as.character(temp$Tot),cex=1.2)
