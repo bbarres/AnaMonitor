@@ -26,11 +26,11 @@ load("data/coorddep.RData")
 load("data/coordreg.RData")
 
 #loading the data exported from PROSPER "tableau de bord"
-datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,sep="\t")
+datasampl<-read.table("data/2017_toutheme_cor.txt",header=TRUE,sep="\t")
 datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
 #loading the result data by departement
-dataresult<-read.table("data/2018_midiou_rez.txt",header=TRUE,sep="\t")
+dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
 #to streamline subsequent analysis, we turned the resistance status factor
 #into two different columns
 dataresult$rslt_RS<-factor(dataresult$rslt_RS,levels=c("R","S"))
@@ -109,7 +109,7 @@ for (i in 1:length(levels(data2map$themat_ID))){
            z=cbind((as.numeric(as.character(temp$Resist))),
                    (as.numeric(as.character(temp$Sensi)))),
            col=colovec,lty=0,
-           radius=(sqrt(as.numeric(as.character(temp$Tot)))*15000),
+           radius=(sqrt(as.numeric(as.character(temp$Tot)))*30000),
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
        labels=as.character(temp$Tot),cex=1.2)
