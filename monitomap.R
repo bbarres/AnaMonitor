@@ -34,8 +34,10 @@ dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
 #to streamline subsequent analysis, we turned the resistance status factor
 #into two different columns
 dataresult$rslt_RS<-factor(dataresult$rslt_RS,levels=c("R","S"))
-dataresult$Resistant<-as.numeric(dataresult$rslt_RS==levels(dataresult$rslt_RS)[1])
-dataresult$Sensitive<-as.numeric(dataresult$rslt_RS==levels(dataresult$rslt_RS)[2])
+dataresult$Resistant<-as.numeric(dataresult$rslt_RS==
+                                   levels(dataresult$rslt_RS)[1])
+dataresult$Sensitive<-as.numeric(dataresult$rslt_RS==
+                                   levels(dataresult$rslt_RS)[2])
 dataresult$Total<-dataresult$Resistant+dataresult$Sensitive
 
 
