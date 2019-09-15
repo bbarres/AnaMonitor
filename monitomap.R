@@ -1,8 +1,8 @@
-###############################################################################
-###############################################################################
+##############################################################################/
+##############################################################################/
 #Different code for producing monitoring-related maps
-###############################################################################
-###############################################################################
+##############################################################################/
+##############################################################################/
 
 #loading the packages necessary for the analysis
 library(rgdal)
@@ -13,9 +13,9 @@ library(RColorBrewer)
 library(dplyr)
 
 
-###############################################################################
-#loading the data
-###############################################################################
+##############################################################################/
+#loading the data####
+##############################################################################/
 
 #load geographical data of departements and regions
 load("data/departeLight.RData")
@@ -26,7 +26,7 @@ load("data/coorddep.RData")
 load("data/coordreg.RData")
 
 #loading the data exported from PROSPER "tableau de bord"
-datasampl<-read.table("data/2017_toutheme_cor.txt",header=TRUE,sep="\t")
+datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,sep="\t")
 datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
 #loading the result data by departement
@@ -41,9 +41,9 @@ dataresult$Sensitive<-as.numeric(dataresult$rslt_RS==
 dataresult$Total<-dataresult$Resistant+dataresult$Sensitive
 
 
-###############################################################################
-#Monitoring sampling maps by regions
-###############################################################################
+##############################################################################/
+#Monitoring sampling maps by regions####
+##############################################################################/
 
 #a note for futur-me: this code will probably need some minor updates in order
 #to work properly on the raw exported-from-PROSPER file
@@ -85,9 +85,9 @@ for (i in 1:length(levels(datasampl$Programme))){
 }
 
 
-###############################################################################
-#Maps of the results of the monitoring
-###############################################################################
+##############################################################################/
+#Maps of the results of the monitoring####
+##############################################################################/
 
 #a note for futur-me: this code will probably need some minor updates in order
 #to work properly on the raw exported-from-PROSPER file
@@ -120,6 +120,6 @@ for (i in 1:length(levels(data2map$themat_ID))){
 }
 
 
-###############################################################################
+##############################################################################/
 #END
-###############################################################################
+##############################################################################/
