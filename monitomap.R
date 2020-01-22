@@ -31,6 +31,7 @@ datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
 #loading the result data by departement
 dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
+dataresult<-read.table("data/2018_themefin.txt",header=TRUE,sep="\t")
 #to streamline subsequent analysis, we turned the resistance status factor
 #into two different columns
 dataresult$rslt_RS<-factor(dataresult$rslt_RS,levels=c("R","S"))
@@ -93,6 +94,8 @@ for (i in 1:length(levels(datasampl$Programme))){
 #to work properly on the raw exported-from-PROSPER file
 
 #grouping and counting the resistant and sensitive samples
+dataresult$themat_ID<-paste(dataresult$themat_ID,dataresult$SA)
+dataresult$themat_ID<-as.factor(dataresult$themat_ID)
 dataCamem<-dataresult %>% 
   group_by(themat_ID,dptmt,pest,host) %>% 
   summarise(Resist=sum(Resistant),Sensi=sum(Sensitive),Tot=sum(Total))
@@ -111,7 +114,7 @@ for (i in 1:length(levels(data2map$themat_ID))){
            z=cbind((as.numeric(as.character(temp$Resist))),
                    (as.numeric(as.character(temp$Sensi)))),
            col=colovec,lty=0,
-           radius=(sqrt(as.numeric(as.character(temp$Tot)))*30000),
+           radius=(sqrt(as.numeric(as.character(temp$Tot)))*15000),
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
        labels=as.character(temp$Tot),cex=1.2)
