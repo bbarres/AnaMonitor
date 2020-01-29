@@ -21,6 +21,8 @@ datamyc2<-read.table("data/2019_VEGEmildiou_rez.txt",header=TRUE,sep=";")
 
 datamyc<-datamyc2[datamyc2$pest_sa_id=="AMISULBROM_SHAM" & 
                     datamyc2$meth_id!="SPORUL_PLASMOPARA_VITICOLA_2018",]
+#because it cause a crash of the loop, we remove one analyze --> to be fixed
+datamyc<-datamyc[datamyc$ana_id!=list(1144,1077),]
 datamyc<-drop.levels(datamyc)
 
 #first we extract the list of the different SA listed in the file
