@@ -12,7 +12,7 @@ library(tidyr)
 library(RColorBrewer)
 
 #loading the data
-datamyc2<-read.table("data/2019_mildiou_rez.txt",header=TRUE,sep=";")
+datamyc2<-read.table("data/2019_VEGEmildiou_rez.txt",header=TRUE,sep=";")
 
 
 ##############################################################################/
