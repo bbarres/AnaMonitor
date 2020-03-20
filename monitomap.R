@@ -25,8 +25,12 @@ load("data/regionsLight.RData")
 load("data/coorddep.RData")
 load("data/coordreg.RData")
 
-#loading the data exported from PROSPER "tableau de bord"
+#loading the data exported from PROSPER "tableau de bord" 2018
 datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,sep="\t")
+datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
+
+#loading the data exported from PROSPER "tableau de bord" 2019
+datasampl<-read.table("data/2019_prelevements.txt",header=TRUE,sep="\t")
 datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 
 #loading the result data by departement
