@@ -36,6 +36,8 @@ datasampl<-merge(datasampl,coordreg,by.x="Region",by.y="reg_CODENAME")
 #loading the result data by departement
 dataresult<-read.table("data/2017_themefin.txt",header=TRUE,sep="\t")
 dataresult<-read.table("data/2018_themefin.txt",header=TRUE,sep="\t")
+dataresult<-read.table("data/2019_rezultBM.txt",header=TRUE,sep="\t")
+
 #to streamline subsequent analysis, we turned the resistance status factor
 #into two different columns
 dataresult$rslt_RS<-factor(dataresult$rslt_RS,levels=c("R","S"))
