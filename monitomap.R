@@ -107,7 +107,7 @@ dataCamem<-dataresult %>%
   summarise(Resist=sum(Resistant),Sensi=sum(Sensitive),Tot=sum(Total))
 data2map<-merge(dataCamem,coorddep,by.x="dptmt",by.y="dep_ID")
 
-#mapping the results for each "programme"
+#mapping the results for each "programme" of the monitoring
 colovec<-c(brewer.pal(9,"Reds")[7],brewer.pal(9,"Blues")[7])
 for (i in 1:length(levels(data2map$themat_ID))){
   temp<-data2map[data2map$themat_ID==levels(data2map$themat_ID)[i],]
