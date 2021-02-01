@@ -56,7 +56,8 @@ dataresult<-read.table("data/floni_dysa_rez.txt",header=TRUE,sep="\t",
                        colClasses="character")
 dataresult<-read.table("data/2020_mild_rez.txt",header=TRUE,sep="\t",
                        colClasses="character")
-
+dataresult<-read.table("data/2020_maprezdysaphis.txt",header=TRUE,sep="\t",
+                       colClasses="character")
 
 #to streamline subsequent analysis, we turned the resistance status factor
 #into two different columns
