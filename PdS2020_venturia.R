@@ -1,6 +1,6 @@
 ##############################################################################/
 ##############################################################################/
-#Analysis of Monilia the mycelial growth experiment on the 2020 monitoring
+#Analysis of Venturia mycelial growth experiment on the 2020 monitoring
 ##############################################################################/
 ##############################################################################/
 
@@ -10,28 +10,25 @@ library(plotrix)
 library(gdata)
 
 #loading the data
-monilCroi20<-read.table("data/PdSMonilia2020.txt",header=TRUE,
-                       stringsAsFactors=TRUE,sep=";")
+ventuCroi20<-read.table("data/2020_PdS_ventu_DOD.txt",header=TRUE,
+                        stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
 #Regression analysis of population germination for 2020 monitoring plan####
 ##############################################################################/
 
-datamyc<-monilCroi20[monilCroi20$lect_echec!=1,]
+datamyc<-ventuCroi20[ventuCroi20$lect_echec!=1,]
 
 #first we extract the list of the different SA listed in the file
 SAlist<-levels(datamyc$pest_sa_id)
-#it seems that CARBENDAZIME tests were discriminant dose analyses, so 
-#we remove this active substance from the list
-SAlist<-SAlist[SAlist!="CARBENDAZIME"]
 #creating the empty result output file
 CompRez<-data.frame(Species=character(),Subs_Act=factor(),
                     sample_ID=factor(),read_time=factor(),
                     ED50=character(),ED95=character(),ED99=character())
 
 #we make a subselection of the data according to the SA
-pdf(file="output/plot_monil_grow20.pdf",width=7)
+pdf(file="output/plot_ventu_grow20.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -84,7 +81,7 @@ dev.off()
 
 #exporting the result as a text file
 CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
-write.table(CompRez, file="output/results_monilgrow20.txt",
+write.table(CompRez, file="output/results_ventugrow20.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 
