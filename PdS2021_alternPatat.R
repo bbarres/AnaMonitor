@@ -10,7 +10,7 @@ library(plotrix)
 library(gdata)
 
 #loading the data
-Alternaria20<-read.table("data/2021_PdS_pyreno_SDHI_soucheRef.txt",
+Alternaria20<-read.table("data/2020_PdS_alternariaPatate.txt",
                         header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
@@ -18,17 +18,17 @@ Alternaria20<-read.table("data/2021_PdS_pyreno_SDHI_soucheRef.txt",
 #Regression analysis of population germination for 2020 monitoring plan####
 ##############################################################################/
 
-datamyc<-pyrenoRef21[pyrenoRef21$lect_echec!=1,]
+datamyc<-Alternaria20[Alternaria20$lect_echec!=1,]
 
 #first we extract the list of the different SA listed in the file
 SAlist<-levels(datamyc$pest_sa_id)
 #creating the empty result output file
-CompRez<-data.frame(Species=character(),Subs_Act=factor(),
-                    sample_ID=factor(),read_time=factor(),
-                    ED50=character(),ED95=character(),ED99=character())
+CompRez<-data.frame("Species"=character(),"Subs_Act"=factor(),
+                    "sample_ID"=factor(),"ED50"=character(),
+                    "SE"=as.character())
 
 #we make a subselection of the data according to the SA
-pdf(file="output/plot_pyreno_ref21.pdf",width=7)
+pdf(file="output/plot_alterPatate20.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -46,11 +46,10 @@ for (j in 1:length(SAlist)) {
                            read_time=factor(),ED50=character(),
                            ED95=character(),ED99=character()),
          REZSA<-data.frame("Species"=Esp_rez,
-                           "Subs_Act"=SAlist[j],"sample_ID"=SA_rez,
-                           "read_time"=data_subSA$tps_expo[1],
+                           "Subs_Act"=SAlist[j],
+                           "sample_ID"=SA_rez,
                            "ED50"=paste(">",max(data_subSA$dose),sep=""),
-                           "ED95"=paste(">",max(data_subSA$dose),sep=""),
-                           "ED99"=paste(">",max(data_subSA$dose),sep=""))
+                           "SE"=paste(">",max(data_subSA$dose),sep=""))
   )
   #we limit the dataset to the sample that reach somehow a IC of 50%
   if(dim(data_subSA[!(data_subSA$ech_id %in% SA_rez),])[1]!=0) {
@@ -64,14 +63,12 @@ for (j in 1:length(SAlist)) {
       plot(temp.m1,ylim=c(0,110),xlim=c(0,50),
            main=paste(data_subSA$bioagr_id[1],
                       SAlist[j],names(table(SA.dat$ech_id))[i]))
-      temp<-ED(temp.m1,c(50,5,1),type="absolute")
+      temp<-ED(temp.m1,c(50),type="absolute")
       tempx<-data.frame("Species"=data_subSA$bioagr_id[1],
                         "Subs_Act"=SAlist[j],
                         "sample_ID"=names(table(SA.dat$ech_id))[i],
-                        "read_time"=data_subSA$tps_expo[1],
                         "ED50"=as.character(temp[1]),
-                        "ED95"=as.character(temp[2]),
-                        "ED99"=as.character(temp[3]))
+                        "SE"=as.character(temp[2]))
       REZSA<-rbind(REZSA,tempx)}} else {
         REZSA<-REZSA
       }
@@ -81,7 +78,7 @@ dev.off()
 
 #exporting the result as a text file
 CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
-write.table(CompRez, file="output/results_pyreno21.txt",
+write.table(CompRez, file="output/results_alterPatate20.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 
