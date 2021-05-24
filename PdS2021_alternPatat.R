@@ -1,6 +1,6 @@
 ##############################################################################/
 ##############################################################################/
-#Analysis of Pyrenophora mycelial growth experiment on the 2021 monitoring
+#Analysis of Alternaria mycelial growth experiment on the 2020 monitoring
 ##############################################################################/
 ##############################################################################/
 
@@ -10,7 +10,7 @@ library(plotrix)
 library(gdata)
 
 #loading the data
-pyrenoRef21<-read.table("data/2021_PdS_pyreno_SDHI_soucheRef.txt",
+Alternaria20<-read.table("data/2021_PdS_pyreno_SDHI_soucheRef.txt",
                         header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
