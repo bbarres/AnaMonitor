@@ -7,6 +7,7 @@
 #loading the packages necessary for the analysis
 library(mapplots)
 library(RColorBrewer)
+library(sp)
 library(dplyr)
 
 
