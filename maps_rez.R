@@ -84,7 +84,7 @@ scalebar <- function(loc,length,unit="km",division.cex=.8,...) {
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
        labels=as.character(temp$Tot),cex=1.2)
-  scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
+  #scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
   par(op)
   dev.off()
 

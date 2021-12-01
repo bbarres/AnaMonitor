@@ -69,7 +69,7 @@ draw.pie(x=temp$longitude,y=temp$latitude,
          labels=NA)
 text(x=temp$longitude,y=temp$latitude,
      labels=as.character(temp$Prel_attend),cex=2)
-scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
+#scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
 plot(REG_SHP,lwd=3)
 title(main="Prélèvement(s) reçu(s)",line=-1)
 if (sum(temp$Prel_recep)==0) {
