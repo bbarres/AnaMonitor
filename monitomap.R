@@ -18,12 +18,13 @@ library(dplyr)
 ##############################################################################/
 
 #load geographical data of departements and regions
-load("data/departeLight.RData")
-load("data/regionsLight.RData")
+load("data/DEP_SHP.RData")
+load("data/REG_SHP.RData")
 
 #load the barycentre coordinates of departements and regions
 load("data/coorddep.RData")
 load("data/coordreg.RData")
+
 
 #loading the data exported from PROSPER "tableau de bord" 2018
 datasampl<-read.table("data/2018_toutheme_cor.txt",header=TRUE,
@@ -84,8 +85,8 @@ for (i in 1:length(levels(datasampl$Programme))){
   png(file=paste("output/",temp$Bioagresseur,temp$Hote,temp$Pesticides,".png",
                  sep=""),width=8,height=4,units="in",res=300)
   op<-par(mfrow=c(1,2),mar=c(0,0,0,0))
-  plot(regionsLight,lwd=3)
-  title(main="Prélèvements attendus",line=-1)
+  plot(REG_SHP,lwd=3)
+  title(main="Prélèvement(s) attendu(s)",line=-1)
   draw.pie(x=temp$longitude,y=temp$latitude,
            z=cbind((temp$Prel_attend),0),
            col=colovec[1],lty=0,
@@ -93,7 +94,7 @@ for (i in 1:length(levels(datasampl$Programme))){
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
        labels=as.character(temp$Prel_attend),cex=2)
-  plot(regionsLight,lwd=3)
+  plot(REG_SHP,lwd=3)
   title(main="Prélèvement(s) reçu(s)",line=-1)
   if (sum(temp$Prel_recep)==0) {
     points(x=temp$longitude,y=temp$latitude)
@@ -135,8 +136,8 @@ for (i in 1:length(levels(data2map$themat_ID))){
   png(file=paste("output/",temp$themat_ID,temp$pest,".png",sep=""),
       width=4,height=4,units="in",res=300)
   op<-par(mar=c(0,0,0,0))
-  plot(departeLight,border="grey70")
-  plot(regionsLight,lwd=2,add=TRUE)
+  plot(DEP_SHP,border="grey70")
+  plot(REG_SHP,lwd=2,add=TRUE)
   draw.pie(x=temp$longitude,y=temp$latitude,
            z=cbind((as.numeric(as.character(temp$Resist))),
                    (as.numeric(as.character(temp$Sensi)))),
