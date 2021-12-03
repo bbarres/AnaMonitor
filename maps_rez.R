@@ -70,23 +70,23 @@ scalebar <- function(loc,length,unit="km",division.cex=.8,...) {
 ##############################################################################/
 
 #mapping the results for each "programme" of the monitoring
-  temp<-data2map
-  png(file=paste("output/",temp$themat_ID,temp$pest,".png",sep=""),
-      width=4,height=4,units="in",res=300)
-  op<-par(mar=c(0,0,0,0))
-  plot(DEP_SHP,border="grey70")
-  plot(REG_SHP,lwd=2,add=TRUE)
-  draw.pie(x=temp$longitude,y=temp$latitude,
-           z=cbind((as.numeric(as.character(temp$Resist))),
-                   (as.numeric(as.character(temp$Sensi)))),
-           col=colovec,lty=0,
-           radius=(sqrt(as.numeric(as.character(temp$Tot)))*15000),
-           labels=NA)
-  text(x=temp$longitude,y=temp$latitude,
-       labels=as.character(temp$Tot),cex=1.2)
-  #scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
-  par(op)
-  dev.off()
+temp<-data2map
+png(file=paste("output/",temp$themat_ID,temp$pest,".png",sep=""),
+    width=4,height=4,units="in",res=300)
+op<-par(mar=c(0,0,0,0))
+plot(DEP_SHP,border="grey70")
+plot(REG_SHP,lwd=2,add=TRUE)
+draw.pie(x=temp$longitude,y=temp$latitude,
+         z=cbind((as.numeric(as.character(temp$Resist))),
+                 (as.numeric(as.character(temp$Sensi)))),
+         col=colovec,lty=0,
+         radius=(sqrt(as.numeric(as.character(temp$Tot)))*15000),
+         labels=NA)
+text(x=temp$longitude,y=temp$latitude,
+     labels=as.character(temp$Tot),cex=1.2)
+#scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
+par(op)
+dev.off()
 
 
 ##############################################################################/
