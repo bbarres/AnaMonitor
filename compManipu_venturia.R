@@ -86,16 +86,23 @@ dev.off()
 
 #exporting the result as a text file
 CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
-write.table(CompRez, file="output/results_compManip.txt",
+write.table(CompRez,file="output/results_compManip.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
+
+##############################################################################/
+#Statistical tests for comparison between raters####
+##############################################################################/
+
 #creating the empty result output file
-CompRez<-data.frame(Species=character(),Subs_Act=factor(),
-                    sample_ID=factor(),repetition=factor(),
-                    ED50=character(),StErr=character())
+CompRez2<-data.frame(Species=character(),Subs_Act=factor(),
+                     sample_ID=factor(),
+                     ED50.fr=character(),StErr.fr=character(),
+                     ED50.ip=character(),StErr.ip=character(),
+                     pval=character()
+                     )
 
 #we make a subselection of the data according to the SA
-pdf(file="output/plot_compManip.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -107,19 +114,18 @@ for (j in 1:length(SAlist)) {
   Esp_rez<-as.character(data_subSA[data_subSA$dose==max(data_subSA$dose) 
                                    & data_subSA$rslt_03>50,
                                    "species"])
-  Rep_rez<-as.character(data_subSA[data_subSA$dose==max(data_subSA$dose) 
-                                   & data_subSA$rslt_03>50,
-                                   "repet"])
   ifelse(length(SA_rez)==0,
          REZSA<-data.frame(Species=character(),Subs_Act=factor(),
-                           sample_ID=factor(),repetition=factor(),
+                           sample_ID=factor(),
                            ED50=character(),StErr=character()
          ),
          REZSA<-data.frame("Species"=Esp_rez,
                            "Subs_Act"=SAlist[j],"sample_ID"=SA_rez,
-                           "repetition"=Rep_rez,
-                           "ED50"=paste(">",max(data_subSA$dose),sep=""),
-                           "StErr"="no_eval"
+                           "ED50.fr"=paste(">",max(data_subSA$dose),sep=""),
+                           "StErr.fr"="no_eval",
+                           "ED50.ip"=paste(">",max(data_subSA$dose),sep=""),
+                           "StErr.ip"="no_eval",
+                           "pval"="no_eval"
          )
   )
   #we limit the data set to the sample that reach somehow a IC of 50%
@@ -132,27 +138,26 @@ for (j in 1:length(SAlist)) {
                    data=tempdat,
                    curveid=repet,
                    fct=LL.4())
-      plot(temp.m1,ylim=c(0,110),xlim=c(0,50),
-           main=paste(data_subSA$bioagr_id[1],
-                      SAlist[j],names(table(SA.dat$ech_id))[i]))
+      temptest<-compParm(temp.m1,"e")
       temp<-ED(temp.m1,c(50),type="absolute")
       tempx<-data.frame("Species"=tempdat$species[1],
                         "Subs_Act"=SAlist[j],
                         "sample_ID"=tempdat$ech_id[1],
-                        "repetition"=dimnames(temp)[[1]],
-                        "ED50"=as.character(temp[,1]),
-                        "StErr"=as.character(temp[,2])
+                        "ED50.fr"=as.character(temp[1,1]),
+                        "StErr.fr"=as.character(temp[1,2]),
+                        "ED50.ip"=as.character(temp[2,1]),
+                        "StErr.ip"=as.character(temp[2,2]),
+                        "pval"=as.character(temptest[4])
       )
       REZSA<-rbind(REZSA,tempx)}} else {
         REZSA<-REZSA
       }
-  CompRez<-rbind(CompRez,REZSA)
+  CompRez2<-rbind(CompRez2,REZSA)
 }
-dev.off()
 
 #exporting the result as a text file
-CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
-write.table(CompRez, file="output/results_compManip.txt",
+CompRez2<-CompRez2[order(CompRez2$Subs_Act,CompRez2$sample_ID),]
+write.table(CompRez2,file="output/results_compManip2.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 
