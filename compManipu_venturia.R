@@ -12,6 +12,8 @@ library(gdata)
 #loading the data
 compManipu<-read.table("data/ventu_manipul.txt",header=TRUE,
                       stringsAsFactors=TRUE,sep="\t")
+#one sample was not scored by two raters, so we remove it
+compManipu<-compManipu[compManipu$ech_id!="20-044-02",]
 
 
 ##############################################################################/
@@ -117,7 +119,9 @@ for (j in 1:length(SAlist)) {
   ifelse(length(SA_rez)==0,
          REZSA<-data.frame(Species=character(),Subs_Act=factor(),
                            sample_ID=factor(),
-                           ED50=character(),StErr=character()
+                           ED50.fr=character(),StErr.fr=character(),
+                           ED50.ip=character(),StErr.ip=character(),
+                           pval=character()
          ),
          REZSA<-data.frame("Species"=Esp_rez,
                            "Subs_Act"=SAlist[j],"sample_ID"=SA_rez,
