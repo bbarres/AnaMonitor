@@ -15,6 +15,8 @@ ventuCroi20<-read.table("data/2020_PdS_ventu_DOD.txt",header=TRUE,
 #loading the data of the strain spores on film
 SporeFilm20<-read.table("data/2020_results_ventuGerm_Film20.txt",header=TRUE,
                         stringsAsFactors=TRUE,sep=";")
+SporeFilm20_2<-read.table("data/2020_results_ventuGerm_Film20_2.txt",header=TRUE,
+                        stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
@@ -92,7 +94,7 @@ write.table(CompRez, file="output/results_ventugrow20.txt",
 #Regression analysis of population germination for 2020 monitoring plan####
 ##############################################################################/
 
-datamyc<-SporeFilm20[SporeFilm20$lect_echec!=1,]
+datamyc<-SporeFilm20[SporeFilm20_2$lect_echec!=1,]
 
 #first we extract the list of the different SA listed in the file
 SAlist<-levels(datamyc$pest_sa_id)
