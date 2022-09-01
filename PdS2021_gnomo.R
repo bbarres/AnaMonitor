@@ -11,7 +11,7 @@ library(gdata)
 
 #loading the data
 gnomo21<-read.table("data/2021_gnomonia_leptostyla.txt",
-                        header=TRUE,stringsAsFactors=TRUE,sep=";")
+                    header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
@@ -62,14 +62,13 @@ for (j in 1:length(SAlist)) {
       plot(temp.m1,ylim=c(0,110),xlim=c(0,50),
            main=paste(data_subSA$bioagr_id[1],
                       SAlist[j],names(table(SA.dat$ech_id))[i]))
-      temp<-ED(temp.m1,c(50,5,1),type="absolute")
+      temp<-ED(temp.m1,c(50),type="absolute")
       tempx<-data.frame("Species"=data_subSA$bioagr_id[1],
                         "Subs_Act"=SAlist[j],
                         "sample_ID"=names(table(SA.dat$ech_id))[i],
                         "read_time"=data_subSA$tps_expo[1],
                         "ED50"=as.character(temp[1]),
-                        "ED95"=as.character(temp[2]),
-                        "ED99"=as.character(temp[3]))
+                        "SE"=as.character(temp[2]))
       REZSA<-rbind(REZSA,tempx)}} else {
         REZSA<-REZSA
       }
@@ -79,5 +78,10 @@ dev.off()
 
 #exporting the result as a text file
 CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
-write.table(CompRez, file="output/results_pyreno21.txt",
+write.table(CompRez, file="output/results_gnomonia21.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
+
+
+##############################################################################/
+#END
+##############################################################################/

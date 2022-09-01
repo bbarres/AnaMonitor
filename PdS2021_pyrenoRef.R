@@ -86,6 +86,7 @@ CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
 write.table(CompRez, file="output/results_pyreno21.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
+
 ##############################################################################/
 #Regression analysis for 2021 reference strains####
 ##############################################################################/
