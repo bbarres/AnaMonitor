@@ -74,7 +74,15 @@ for (i in 1:length(levels(data2map$themat_ID))){
 #Distribution of the % of the ####
 ##############################################################################/
 
-
+#plot histogram for the distribution of the percentage of sporulation
+for (i in 1:length(levels(rezMoni$themat_ID))){
+  temp<-rezMoni[rezMoni$themat_ID==levels(rezMoni$themat_ID)[i],]
+  png(file=paste("output/","hist",temp$themat_ID,temp$pest,".png",sep=""),
+      width=4,height=7,units="in",res=300)
+  hist(as.numeric(temp$Perc_spor),ann=FALSE,las=1,freq=TRUE,
+       include.lowest=TRUE,breaks=seq(0,100,by=10))
+  dev.off()
+}
 
 
 ##############################################################################/
