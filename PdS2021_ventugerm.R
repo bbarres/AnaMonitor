@@ -14,7 +14,7 @@ ventugerm21<-read.table("data/2021_PdS_Ventu_germ.txt",
 
 
 ##############################################################################/
-#Regression analysis of population germination for 2020 monitoring plan####
+#Regression analysis of population germination for 2021 monitoring plan####
 ##############################################################################/
 
 datamyc<-ventugerm21[ventugerm21$lect_echec!=1,]
