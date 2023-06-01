@@ -71,19 +71,19 @@ text(x=temp$longitude,y=temp$latitude,
      labels=as.character(temp$Prel_attend),cex=2)
 #scalebar(c(191260,6060000),300000,"km",division.cex=0.8)
 plot(REG_SHP,lwd=3)
-title(main="Prélèvement(s) reçu(s)",line=-1)
-if (sum(temp$Prel_recep)==0) {
+title(main="Prélèvement(s) analysé(s)",line=-1)
+if (sum(temp$Prel_analy)==0) {
   points(x=temp$longitude,y=temp$latitude)
   text(x=temp$longitude,y=temp$latitude,
-       labels=as.character(temp$Prel_recep),cex=2)
+       labels=as.character(temp$Prel_analy),cex=2)
 } else {
   draw.pie(x=temp$longitude,y=temp$latitude,
-           z=cbind((temp$Prel_recep),0),
+           z=cbind((temp$Prel_analy),0),
            col=colovec[2],lty=0,
-           radius=(sqrt(temp$Prel_recep)*30000),
+           radius=(sqrt(temp$Prel_analy)*30000),
            labels=NA)
   text(x=temp$longitude,y=temp$latitude,
-       labels=as.character(temp$Prel_recep),cex=2)
+       labels=as.character(temp$Prel_analy),cex=2)
 }
 par(op)
 dev.off()
