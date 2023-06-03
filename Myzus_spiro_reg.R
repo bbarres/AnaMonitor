@@ -13,14 +13,13 @@ dataReg<-read.table("data/ExtractionR_MyzusSpiro_72H.txt",
                     header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
+##############################################################################/
+#Observation of the raw data####
+##############################################################################/
+
 #aggregating the number of individuals per rep and dose
 dataRegRep<-as.data.frame(aggregate(cbind(nb_vi,nb_mtot)~dose+rep_test,
                     data=dataReg,"sum"))
-
-#aggregating the number of individuals per dose
-dataRegDos<-as.data.frame(aggregate(cbind(nb_vi,nb_mtot)~dose,
-                                    data=dataReg,"sum"))
-
 #the maximum number of individual for one repetition and one dose
 ymasc<-max((dataRegRep$nb_vi+dataRegRep$nb_mtot))
 #plotting the distribution of dead / alive for each repetition
@@ -32,6 +31,15 @@ for (i in c(1:length(levels(dataRegRep$rep_test)))) {
           main=levels(dataRegRep$rep_test)[i])
 }
 par(op)
+
+#aggregating the number of individuals per dose
+dataRegDos<-as.data.frame(aggregate(cbind(nb_vi,nb_mtot)~dose,
+                                    data=dataReg,"sum"))
+#barplot for all repetitions combined
+barplot(t(as.matrix(dataRegDos[,c(2:3)])),
+        names.arg=dataRegDos$dose,
+        las=1,xlab="Dose",ylab="Number",
+        main="All repetitions")
 
 
 ##############################################################################/
