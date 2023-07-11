@@ -25,7 +25,8 @@ ymasc<-max((dataRegRep$nb_vi+dataRegRep$nb_mtot))
 #plotting the distribution of dead / alive for each repetition
 op<-par(mfrow=c(2,2))
 for (i in c(1:length(levels(as.factor(dataRegRep$dat_test))))) {
-  temp<-dataRegRep[dataRegRep$dat_test==levels(as.factor(dataRegRep$dat_test))[i],]
+  temp<-dataRegRep[dataRegRep$dat_test==
+                     levels(as.factor(dataRegRep$dat_test))[i],]
   barplot(t(as.matrix(temp[,c(3:4)])),names.arg=temp$dose,
           las=1,xlab="Dose",ylab="Number",ylim=c(0,ymasc),
           main=levels(dataRegRep$dat_test)[i])
