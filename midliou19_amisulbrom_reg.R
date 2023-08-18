@@ -12,7 +12,8 @@ library(tidyr)
 library(RColorBrewer)
 
 #loading the data
-datamyc2<-read.table("data/2019_VEGEmildiou_rez.txt",header=TRUE,sep=";")
+datamyc2<-read.table("data/2019_VEGEmildiou_rez.txt",header=TRUE,
+                     stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
@@ -42,18 +43,19 @@ for (j in 1:length(SAlist)) {
   
   for (i in 1:dim(table(data_subSA$ech_id))[1]) {
     tempdat<-data_subSA[data_subSA$ech_id==names(table(data_subSA$ech_id))[i],]
-    if(tempdat[tempdat$dose==max(tempdat$dose),"rslt_03"]>50) {
-      tempx<-data.frame("Subs_Act"=SAlist[j],"sample_ID"=tempdat$ech_id[1],
-                        "read_time"=data_subSA$tps_expo[1],
-                        "ED50"=paste(">",max(tempdat$dose),sep=""),
-                        "ED95"=paste(">",max(tempdat$dose),sep=""),
-                        "ED99"=paste(">",max(tempdat$dose),sep=""))
-    } else {
+    # if(tempdat[tempdat$dose==max(tempdat$dose),"rslt_03"]>50) {
+    #   tempx<-data.frame("Subs_Act"=SAlist[j],"sample_ID"=tempdat$ech_id[1],
+    #                     "read_time"=data_subSA$tps_expo[1],
+    #                     "ED50"=paste(">",max(tempdat$dose),sep=""),
+    #                     "ED95"=paste(">",max(tempdat$dose),sep=""),
+    #                     "ED99"=paste(">",max(tempdat$dose),sep=""))
+    # } else {
       temp.m1<-drm(rslt_03~dose,
                    data=tempdat,
-                   fct=LN.3())
+                   fct=LL.3())
       plot(temp.m1,ylim=c(0,110),xlim=c(0,100),
            main=paste(SAlist[j],as.character(tempdat$ech_id[1])))
+      plot(temp.m1,type="obs",add=TRUE,col="red")
       temp<-ED(temp.m1,c(50,5,1),type="absolute")
       tempx<-data.frame("Subs_Act"=SAlist[j],
                         "sample_ID"=as.character(tempdat$ech_id[1]),
@@ -61,7 +63,7 @@ for (j in 1:length(SAlist)) {
                         "ED50"=as.character(temp[1]),
                         "ED95"=as.character(temp[2]),
                         "ED99"=as.character(temp[3]))
-    }
+    # }
     
     REZSA<-rbind(REZSA,tempx)
   }

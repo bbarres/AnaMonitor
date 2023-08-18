@@ -40,13 +40,13 @@ for (j in 1:length(SAlist)) {
   
   for (i in 1:dim(table(data_subSA$ech_id))[1]) {
     tempdat<-data_subSA[data_subSA$ech_id==names(table(data_subSA$ech_id))[i],]
-    if(tempdat[tempdat$dose==max(tempdat$dose),"rslt_03"]>50) {
-      tempx<-data.frame("Subs_Act"=SAlist[j],"sample_ID"=tempdat$ech_id[1],
-                        "read_time"=data_subSA$tps_expo[1],
-                        "ED50"=paste(">",max(tempdat$dose),sep=""),
-                        "ED95"=paste(">",max(tempdat$dose),sep=""),
-                        "ED99"=paste(">",max(tempdat$dose),sep=""))
-    } else {
+    # if(tempdat[tempdat$dose==max(tempdat$dose),"rslt_03"]>50) {
+    #   tempx<-data.frame("Subs_Act"=SAlist[j],"sample_ID"=tempdat$ech_id[1],
+    #                     "read_time"=data_subSA$tps_expo[1],
+    #                     "ED50"=paste(">",max(tempdat$dose),sep=""),
+    #                     "ED95"=paste(">",max(tempdat$dose),sep=""),
+    #                     "ED99"=paste(">",max(tempdat$dose),sep=""))
+    # } else {
       temp.m1<-drm(rslt_03~dose,
                    data=tempdat,
                    fct=LL.3())
@@ -59,7 +59,7 @@ for (j in 1:length(SAlist)) {
                         "ED50"=as.character(temp[1]),
                         "ED95"=as.character(temp[2]),
                         "ED99"=as.character(temp[3]))
-    }
+    # }
     
     REZSA<-rbind(REZSA,tempx)
   }
@@ -77,9 +77,14 @@ write.table(CompRez, file="output/results_cyazo_vs_amisul.txt",
 
 plot(log(as.numeric(CompRez$ED50[1:4])),log(as.numeric(CompRez$ED50[5:8])),
      xlab="CI50 amisulbrom SHAM",ylab="CI50 cyazofamid SHAM")
-plot(as.numeric(CompRez$ED50[1:4]),as.numeric(CompRez$ED50[5:8]),
+
+CompRez_wide<-spread(CompRez[,1:4],Subs_Act,ED50)
+pdf(file="output/plot_correlAmisCyazo.pdf",width=7)
+plot(as.numeric(CompRez_wide$AMISULBROM_SHAM),
+     as.numeric(CompRez_wide$`CYAZOFAMIDE _SHAM`),
      xlab="CI50 amisulbrom SHAM",ylab="CI50 cyazofamid SHAM",
-     xlog=TRUE,ylog=TRUE,log="xy")
+     xlog=TRUE,ylog=TRUE,log="xy",las=1)
+dev.off()
 
 
 ##############################################################################/
