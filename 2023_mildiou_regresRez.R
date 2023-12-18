@@ -17,7 +17,7 @@ datamyc<-read.table("data/2023_PdS_mildiouVigne_CDR_OxaZoxa.txt",
 
 
 ##############################################################################/
-#Regression analysis of mycelial growth experiment 14 days####
+#Regression analysis of sporulation  experiment ####
 ##############################################################################/
 
 datamyc<-datamyc[datamyc$lect_echec!=1,]
