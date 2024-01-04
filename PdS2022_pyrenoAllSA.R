@@ -81,7 +81,7 @@ dev.off()
 
 #exporting the result as a text file
 CompRez<-CompRez[order(CompRez$Subs_Act,CompRez$sample_ID),]
-write.table(CompRez, file="output/results_pyreno22.txt",
+write.table(CompRez,file="output/results_pyreno22.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 

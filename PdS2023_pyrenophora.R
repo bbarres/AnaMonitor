@@ -1,6 +1,6 @@
 ##############################################################################/
 ##############################################################################/
-#Script for Plasmopara viticola 2023 CI50 oxathia and zoxa
+#Script for pyrenophora in 2022 and 2023 CI50
 ##############################################################################/
 ##############################################################################/
 
@@ -12,12 +12,12 @@ library(tidyr)
 library(RColorBrewer)
 
 #loading the data
-datamyc<-read.table("data/2023_PdS_mildiouVigne_CDR_OxaZoxa.txt",
+datamyc<-read.table("data/2023_PdS_pyrenophora_2022-23.txt",
                     header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
-#Regression analysis of sporulation  experiment ####
+#Regression analysis of mycelial growth  experiment####
 ##############################################################################/
 
 datamyc<-datamyc[datamyc$lect_echec!=1,]
@@ -36,7 +36,7 @@ CompRez<-data.frame("strain_ID"=factor(),"ActiveSub"=factor(),
                     "e-tval"=as.numeric(),"e-pval"=as.numeric())
 
 #we make a subselection of the data according to the SA
-pdf(file="output/2023_plasmo_plot_DoseResp.pdf",width=7)
+pdf(file="output/2023_PdSplot_pyreno.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -61,14 +61,14 @@ for (j in 1:length(SAlist)) {
                         "d-param"=NA,"d-SE"=NA,"d-tval"=NA,"d-pval"=NA,
                         "e-param"=NA,"e-SE"=NA,"e-tval"=NA,"e-pval"=NA)
     } else { tryCatch({
-    temp.m1<-drm(rslt_03~dose,
-                 data=tempdat,
-                 fct=LL.3())
-    plot(temp.m1,ylim=c(-10,120),xlim=c(0,100),type="confidence",
-         main=paste(SAlist[j],as.character(tempdat$ech_id[1])))
-    plot(temp.m1,ylim=c(-10,120),xlim=c(0,100),col="red",
-         pch=4,type="obs",add=TRUE)
-    
+      temp.m1<-drm(rslt_03~dose,
+                   data=tempdat,
+                   fct=LL.3())
+      plot(temp.m1,ylim=c(-10,120),xlim=c(0,100),type="confidence",
+           main=paste(SAlist[j],as.character(tempdat$ech_id[1])))
+      plot(temp.m1,ylim=c(-10,120),xlim=c(0,100),col="red",
+           pch=4,type="obs",add=TRUE)
+      
     },error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
       if (!exists("temp.m1")){
         tempx<-data.frame("strain_ID"=tempdat$ech_id[1],"ActiveSub"=SAlist[j],
@@ -100,24 +100,8 @@ for (j in 1:length(SAlist)) {
 }
 dev.off()
 
-write.table(CompRez,file="output/2023_plasmo_results_DosResp.txt",
+write.table(CompRez,file="output/2023_PdSresults_pyreno.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
-
-
-##############################################################################/
-#Looking at the correlation between amisulbrom and cyazofamid CI50####
-##############################################################################/
-
-plot(log(as.numeric(CompRez$ED50[1:4])),log(as.numeric(CompRez$ED50[5:8])),
-     xlab="CI50 amisulbrom SHAM",ylab="CI50 cyazofamid SHAM")
-
-CompRez_wide<-spread(CompRez[,1:4],Subs_Act,ED50)
-pdf(file="output/2023plasmo_plot_correlAmisCyazo.pdf",width=7)
-plot(as.numeric(CompRez_wide$AMISULBROM_SHAM),
-     as.numeric(CompRez_wide$`CYAZOFAMIDE _SHAM`),
-     xlab="CI50 amisulbrom SHAM",ylab="CI50 cyazofamid SHAM",
-     xlog=TRUE,ylog=TRUE,log="xy",las=1)
-dev.off()
 
 
 ##############################################################################/
