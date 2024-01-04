@@ -41,9 +41,15 @@ for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
   
-  REZSA<-data.frame(Subs_Act=factor(),sample_ID=factor(),
-                    read_time=factor(),ED50=character(),
-                    ED95=character(),ED99=character())
+  REZSA<-data.frame("strain_ID"=factor(),"ActiveSub"=factor(),
+                    "ED50-abs"=as.numeric(),"ED50-SE"=as.numeric(),
+                    "ED50-lower"=as.numeric(),"ED50-upper"=as.numeric(),
+                    "b-param"=as.numeric(),"b-SE"=as.numeric(),
+                    "b-tval"=as.numeric(),"b-pval"=as.numeric(),
+                    "d-param"=as.numeric(),"d-SE"=as.numeric(),
+                    "d-tval"=as.numeric(),"d-pval"=as.numeric(),
+                    "e-param"=as.numeric(),"e-SE"=as.numeric(),
+                    "e-tval"=as.numeric(),"e-pval"=as.numeric())
   
   for (i in 1:dim(table(data_subSA$ech_id))[1]) {
     tempdat<-data_subSA[data_subSA$ech_id==names(table(data_subSA$ech_id))[i],]
@@ -89,8 +95,6 @@ for (j in 1:length(SAlist)) {
       REZSA<-rbind(REZSA,tempx)
       rm(temp.m1)
     }
-    
-    REZSA<-rbind(REZSA,tempx)
   }
   CompRez<-rbind(CompRez,REZSA)
 }
