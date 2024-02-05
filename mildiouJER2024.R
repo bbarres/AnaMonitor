@@ -96,11 +96,9 @@ barplot(t(temp1),col=colovec,las=1,main=nametemp,cex.names=1.5,
 dev.off()}
 
 
-
 ##############################################################################/
 #Distribution of frequencies within population####
 ##############################################################################/
-
 
 #distribution between 2018-2023
 for (i in 1:length(levels(rezMoni$themat_ID))){
@@ -130,7 +128,19 @@ for (i in 1:length(levels(rezMoni$themaYear))){
 }
 
 
+#evolution of mean frequencies in R population
+temp<-rezMoni[rezMoni$rslt_RS=="R",]
+temp<-rezMoni
+temp<-droplevels(temp)
+temp1<-aggregate(as.numeric(temp$Perc_spor),list(temp$themaYear),FUN=mean)
+temp1$SA<-c(rep("ametoc",6),c(rep("amisu",6)),c(rep("AOX",6)),
+            c(rep("cyazo",6)),c(rep("fluop",5)),c(rep("rien",8)))
 
+write.table(temp1,file="output/JER2024meanFreq.txt",sep="\t",
+            quote=FALSE)
+
+plot(temp1[temp1$SA=="ametoc",]$x,type="b",las=1,
+     ylab="Fréquence",xlab="Année")
 
 
 ##############################################################################/
