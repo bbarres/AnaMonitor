@@ -14,6 +14,8 @@ library(RColorBrewer)
 #loading the data
 datamyc<-read.table("data/2023_PdS_Monilia_2_2023.txt",
                     header=TRUE,stringsAsFactors=TRUE,sep=";")
+datamyc<-read.table("data/2023_PdS_monilia_crmyc.txt",
+                    header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
@@ -36,7 +38,7 @@ CompRez<-data.frame("strain_ID"=factor(),"ActiveSub"=factor(),
                     "e-tval"=as.numeric(),"e-pval"=as.numeric())
 
 #we make a subselection of the data according to the SA
-pdf(file="output/2023_PdSplot_monilia2.pdf",width=7)
+pdf(file="output/2023_PdSplot_monilia_crmyc.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -100,7 +102,7 @@ for (j in 1:length(SAlist)) {
 }
 dev.off()
 
-write.table(CompRez,file="output/2023_PdSresults_monilia2.txt",
+write.table(CompRez,file="output/2023_PdSresults_monilia_crmyc.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 
