@@ -1,6 +1,6 @@
 ##############################################################################/
 ##############################################################################/
-#Script for Monilia 2 2023 CI50
+#Script for Gnomonia 2023 CI50 evaluation
 ##############################################################################/
 ##############################################################################/
 
@@ -12,14 +12,12 @@ library(tidyr)
 library(RColorBrewer)
 
 #loading the data
-datamyc<-read.table("data/2023_PdS_Monilia_2_2023.txt",
-                    header=TRUE,stringsAsFactors=TRUE,sep=";")
-datamyc<-read.table("data/2023_PdS_monilia_crmyc.txt",
+datamyc<-read.table("data/2023_PdS_gnomonia.txt",
                     header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
 ##############################################################################/
-#Regression analysis of mycelial growth experiment####
+#Regression analysis of sporulation  experiment####
 ##############################################################################/
 
 datamyc<-datamyc[datamyc$lect_echec!=1,]
@@ -38,7 +36,7 @@ CompRez<-data.frame("strain_ID"=factor(),"ActiveSub"=factor(),
                     "e-tval"=as.numeric(),"e-pval"=as.numeric())
 
 #we make a subselection of the data according to the SA
-pdf(file="output/2023_PdSplot_monilia_crmyc.pdf",width=7)
+pdf(file="output/2023_PdSplot_gnomonia.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -102,7 +100,7 @@ for (j in 1:length(SAlist)) {
 }
 dev.off()
 
-write.table(CompRez,file="output/2023_PdSresults_monilia_crmyc.txt",
+write.table(CompRez,file="output/2023_PdSresults_gnomonia.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 
