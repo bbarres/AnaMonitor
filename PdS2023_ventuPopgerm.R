@@ -1,6 +1,6 @@
 ##############################################################################/
 ##############################################################################/
-#Script for Venturia monospores dose response in 2023 CI50
+#Script for Venturia monitoring in 2023 CI50
 ##############################################################################/
 ##############################################################################/
 
@@ -12,7 +12,7 @@ library(tidyr)
 library(RColorBrewer)
 
 #loading the data
-datamyc<-read.table("data/2023_PdS_Venturia_monospores.txt",
+datamyc<-read.table("data/2023_PdS_venturia_2023.txt",
                     header=TRUE,stringsAsFactors=TRUE,sep=";")
 
 
@@ -36,7 +36,7 @@ CompRez<-data.frame("strain_ID"=factor(),"ActiveSub"=factor(),
                     "e-tval"=as.numeric(),"e-pval"=as.numeric())
 
 #we make a subselection of the data according to the SA
-pdf(file="output/2023_PdSplot_Monoventuria.pdf",width=7)
+pdf(file="output/2023_PdSplot_venturia.pdf",width=7)
 for (j in 1:length(SAlist)) {
   data_subSA<-datamyc[datamyc$pest_sa_id==SAlist[j],]
   data_subSA$ech_id<-drop.levels(data_subSA$ech_id)
@@ -100,7 +100,7 @@ for (j in 1:length(SAlist)) {
 }
 dev.off()
 
-write.table(CompRez,file="output/2023_PdSresults_Monoventuria.txt",
+write.table(CompRez,file="output/2023_PdSresults_venturia.txt",
             sep="\t",quote=FALSE,row.names=FALSE)
 
 
